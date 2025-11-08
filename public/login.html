@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - World Weather Report</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #74ebd5, #ACB6E5);
+      text-align: center;
+      padding: 50px;
+    }
+    form {
+      background: white;
+      display: inline-block;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+    input {
+      width: 250px;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>🌤️ World Weather Report - Login</h2>
+
+  <form id="loginForm">
+    <input type="text" name="username" placeholder="Enter Username" required><br>
+    <input type="password" name="password" placeholder="Enter Password" required><br>
+    <button type="submit">Login</button>
+  </form>
+
+  <p>Don’t have an account? <a href="register.html">Register here</a></p>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
+        const res = await fetch('http://localhost:5000/login', {   // ✅ full backend URL
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const text = await res.text();
+
+        if (res.ok) {
+          alert(text);
+          // Optional: redirect to dashboard or weather page
+          window.location.href = 'weather.html';
+        } else {
+          alert(text);
+        }
+      } catch (err) {
+        alert('❌ Server not reachable. Please try again later.');
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
